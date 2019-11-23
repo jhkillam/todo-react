@@ -1,3 +1,5 @@
+
+
 class ToDoForm extends React.Component {
   state = {
     toDoItem: "",
@@ -20,6 +22,12 @@ class ToDoForm extends React.Component {
       toDoList: newToDoList
     })
   }
+  taskDone(index) {
+    const newToDoList = [...this.state.toDoList]
+    newToDoList[index].isComplete = !newToDoList[index].isComplete
+    this.setState({ toDoList: newToDoList })
+    console.log(newToDoList)
+  }
   render() {
     return (
       <div className="container">
@@ -32,14 +40,32 @@ class ToDoForm extends React.Component {
         </form>
         <ul>
           {this.state.toDoList.map((toDo, index) => {
-            console.log(toDo, index)
-            return (
-              <li key={index}>
-                {toDo.toDoItem} <button>To-Do: Make this mark item complete</button>
-              </li>
-            )
+            // console.log(toDo, index)
+            if (!toDo.isComplete) {
+              return (
+                <li key={index}>
+                  {toDo.toDoItem} <button onClick={() => { this.taskDone(index) }}>Done</button>
+                </li>
+              )
+            }
+            
           })}
         </ul>
+        <div>
+          <h2>Completed Items</h2>
+          <ul>
+          {this.state.toDoList.map((toDo, index) => {
+            // console.log(toDo, index)
+            if (toDo.isComplete) {
+              return (
+                <li key={index}>
+                  {toDo.toDoItem}
+                </li>
+              )
+            }
+          })}
+        </ul>
+        </div>
       </div>
     )
   }
